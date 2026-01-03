@@ -3,28 +3,31 @@ package database
 import (
 	"authify/pkg/logger"
 	"context"
-	"log"
 	"os"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/joho/godotenv"
 )
 
+var conn *pgx.Conn
+
 func ConnectDB() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file")
-	}
+	var err error
 
 	connectionString := os.Getenv("DATABASE_URL")
-	conn, err := pgx.Connect(context.Background(), connectionString)
+	conn, err = pgx.Connect(context.Background(), connectionString)
 	if err != nil {
 		panic(err)
 	}
 
 	logger.Green("DB Connected")
+}
 
-	defer func() {
+func DisconnectDB() {
+	if conn != nil {
 		conn.Close(context.Background())
 		logger.Red("DB Disconnected")
-	}()
+		return
+	}
+
+	logger.Yellow("DB client is empty")
 }

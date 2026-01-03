@@ -42,3 +42,12 @@ func Yellow(message string) {
 	fmt.Print(timestamp)
 	color.New(color.BgYellow, color.FgBlack).Println(message)
 }
+
+func White(message string)  {
+	now := time.Now()
+
+	timestamp := now.Format("2006-01-02 15:04:05 ")
+
+	fmt.Print(timestamp)
+	color.New(color.BgHiWhite, color.FgBlack).Println(message)
+}
